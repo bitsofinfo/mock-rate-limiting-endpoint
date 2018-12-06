@@ -12,7 +12,7 @@ Customizable: See usage and examples below for details.
 ```
 docker build -t mock-rate-limiting-endpoint:latest .
 
-docker run -p 8081:8081mock-rate-limiting-endpoint:latest endpoint.py
+docker run -p 8081:8081 mock-rate-limiting-endpoint:latest endpoint.py
 ```
 
 ## Usage
