@@ -6,9 +6,8 @@
 $> python3 endpoint.py -h
 
 usage: endpoint.py [-h] [-p LISTEN_PORT] [-m MAX_CALLS] [-P PERIOD_SECONDS]
-                  [-r RETRY_SECONDS] [-c LIMIT_HIT_RESPONSE_CODE]
-
-                  [-a RETRY_AFTER_HEADER_NAME]
+                   [-r RETRY_IN_SECONDS] [-c LIMIT_HIT_RESPONSE_CODE]
+                   [-a RETRY_AFTER_HEADER_NAME]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -20,8 +19,7 @@ optional arguments:
   -P PERIOD_SECONDS, --period-seconds PERIOD_SECONDS
                         Period in seconds that the --max-calls will apply for,
                         Default 10
-
-  -r RETRY_SECONDS, --retry-seconds RETRY_SECONDS
+  -r RETRY_IN_SECONDS, --retry-in-seconds RETRY_IN_SECONDS
                         Value for the --retry-after-header-name argument which
                         is returned when the rate limit has been reached,
                         default 10
@@ -38,7 +36,7 @@ Start in a shell, logs to stdout
 ```
 ./python3 endpoint.py
 
-2018-12-06 19:11:47,423 - root - DEBUG - Starting with config: {"listen_port": 8081, "max_calls": 1, "period_seconds": 10, "retry_in_seconds": 10, "limit_hit_response_code": 429, "retry_after_header_name": "Retry-After"}
+2018-12-06 19:33:07,535 - root - DEBUG - Starting with config: {"listen_port": 8081, "max_calls": 1, "period_seconds": 10, "retry_in_seconds": 10, "limit_hit_response_code": 429, "retry_after_header_name": "Retry-After"}
 ```
 
 In another shell:

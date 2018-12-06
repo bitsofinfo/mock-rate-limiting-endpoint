@@ -60,6 +60,7 @@ class MockRateLimitingEndpoint(resource.Resource):
         except RateLimitException as e:
             self.total_limit_hits += 1
             request.setResponseCode(curr_limit_hit_response_code)
+            request.setHeader(curr_retry_header_name, self.retry_in_seconds)
             toReturn['status_code'] = curr_limit_hit_response_code
             toReturn['msg'] = "%d: rate limit hit max_calls:%d period_seconds:%d" % (curr_limit_hit_response_code,self.max_calls,self.period_seconds)
             toReturn['retry_in_seconds'] = self.retry_in_seconds
@@ -78,7 +79,6 @@ class MockRateLimitingEndpoint(resource.Resource):
 
             logging.debug(("GET %s : " + json.dumps(toReturn)) % request.path.decode("UTF-8"))
 
-        request.setHeader(curr_retry_header_name, self.retry_in_seconds)
         return json.dumps(toReturn,indent=2).encode('UTF-8')
 
 
