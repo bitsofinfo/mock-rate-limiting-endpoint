@@ -3,7 +3,7 @@
 Simple mock endpoint that simulates a rate limiting endpoint. Useful for testing
 clients and how they interact with a rate limited API.
 
-Python 3+
+Python 3+, and `pip twisted ratelimit`
 
 Customizable: See usage and examples below for details.
 
@@ -12,7 +12,7 @@ Customizable: See usage and examples below for details.
 ```
 docker build -t mock-rate-limiting-endpoint:latest .
 
-docker run -p 8081:8081mock-rate-limiting-endpoint:latest endpoint.py 
+docker run -p 8081:8081mock-rate-limiting-endpoint:latest endpoint.py
 ```
 
 ## Usage
