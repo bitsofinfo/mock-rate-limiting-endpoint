@@ -18,6 +18,8 @@ class MockRateLimitingEndpoint(resource.Resource):
     total_ok = 0
     total_limit_hits = 0
 
+    ratelimitedfunc = None
+
     max_calls= 1
     period_seconds = 10
     retry_in_seconds = 30
@@ -25,11 +27,6 @@ class MockRateLimitingEndpoint(resource.Resource):
 
     # Default: https://tools.ietf.org/html/rfc7231#section-7.1.3
     retry_after_header_name = "Retry-After"
-
-    # The function actually enforcing the rate limits configured
-    @limits(calls=max_calls, period=period_seconds)
-    def endpoint(self):
-        return "OK"
 
     def render_GET(self, request):
         self.total_reqs += 1
@@ -52,7 +49,7 @@ class MockRateLimitingEndpoint(resource.Resource):
 
         try:
             # attempt to call it
-            self.endpoint()
+            self.ratelimitedfunc()
             self.total_ok += 1
 
             toReturn['status_code'] = 200
@@ -124,6 +121,13 @@ if __name__ == '__main__':
     httpdthread.start()
 
     logging.debug("Starting with config: " + json.dumps(vars(args)))
+
+    # The function actually enforcing the rate limits configured
+    @limits(calls=args.max_calls, period=args.period_seconds)
+    def ratelimitedfunc():
+        return "OK"
+
+    endpoint.ratelimitedfunc = ratelimitedfunc
 
     # wait for interrupt
     try:

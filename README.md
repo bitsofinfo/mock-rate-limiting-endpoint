@@ -37,6 +37,10 @@ Start in a shell, logs to stdout
 ./python3 endpoint.py
 
 2018-12-06 19:33:07,535 - root - DEBUG - Starting with config: {"listen_port": 8081, "max_calls": 1, "period_seconds": 10, "retry_in_seconds": 10, "limit_hit_response_code": 429, "retry_after_header_name": "Retry-After"}
+...
+2018-12-06 19:53:08,561 - root - DEBUG - GET / : {"path": "/", "status_code": 200, "msg": "OK", "total_reqs": 1, "total_ok": 1, "total_limit_hits": 0}
+2018-12-06 19:53:09,339 - root - DEBUG - GET / : {"path": "/", "status_code": 429, "msg": "429: rate limit hit max_calls:1 period_seconds:10", "retry_in_seconds":
+10, "retry_after_header_name": "Retry-After", "total_reqs": 2, "total_ok": 1, "total_limit_hits": 1}
 ```
 
 In another shell make a request
