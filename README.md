@@ -3,7 +3,7 @@
 Simple mock endpoint that simulates a rate limiting endpoint. Useful for testing
 clients and how they interact with a rate limited API.
 
-Python 3+, and `pip twisted ratelimit`
+Python 3+, and `pip install twisted ratelimit`
 
 Customizable: See usage and examples below for details.
 
