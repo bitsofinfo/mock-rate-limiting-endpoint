@@ -41,10 +41,14 @@ class MockRateLimitingEndpoint(resource.Resource):
         # Override the retry_after_header_name
         if request.args.get(b'retryHeaderName'):
             curr_retry_header_name = request.args.get(b'retryHeaderName')[0].decode('utf-8')
+        if request.args.get(b'retry_after_header_name'):
+            curr_retry_header_name = request.args.get(b'retry_after_header_name')[0].decode('utf-8')
 
         # Override the limit_hit_response_code
         if request.args.get(b'limitHitResponseCode'):
-            curr_limit_hit_response_code = request.args.get(b'limitHitResponseCode')[0].decode('utf-8')
+            curr_limit_hit_response_code = int(request.args.get(b'limitHitResponseCode')[0].decode('utf-8'))
+        if request.args.get(b'limit_hit_response_code'):
+            curr_limit_hit_response_code = int(request.args.get(b'limit_hit_response_code')[0].decode('utf-8'))
 
         try:
             # attempt to call it

@@ -39,9 +39,8 @@ Start in a shell, logs to stdout
 2018-12-06 19:33:07,535 - root - DEBUG - Starting with config: {"listen_port": 8081, "max_calls": 1, "period_seconds": 10, "retry_in_seconds": 10, "limit_hit_response_code": 429, "retry_after_header_name": "Retry-After"}
 ```
 
-In another shell:
+In another shell make a request
 ```
-# make a request
 bash-4.4$ curl http://localhost:8081
 {
   "path": "/",
@@ -51,21 +50,34 @@ bash-4.4$ curl http://localhost:8081
   "total_ok": 1,
   "total_limit_hits": 0
 }
+```
 
-# make a 2nd request
-bash-4.4$ curl http://localhost:8081
+Make a 2nd request
+```
+bash-4.4$ curl -v  http://127.0.0.1:8081
+* ...
+>
+< HTTP/1.1 429 Unknown Status
+< Server: TwistedWeb/18.9.0
+< Date: Thu, 06 Dec 2018 19:41:06 GMT
+< Retry-After: 10
+< Content-Length: 232
+< Content-Type: text/html
+<
 {
   "path": "/",
   "status_code": 429,
   "msg": "429: rate limit hit max_calls:1 period_seconds:10",
-  "retry_in_seconds": 30,
+  "retry_in_seconds": 10,
   "retry_after_header_name": "Retry-After",
-  "total_reqs": 2,
-  "total_ok": 1,
+  "total_reqs": 3,
+  "total_ok": 2,
   "total_limit_hits": 1
 }
+```
 
-# Wait 10s for 3rd
+Wait 10s for 3rd request:
+```
 bash-4.4$ curl http://localhost:8081
 {
   "path": "/",
@@ -74,5 +86,55 @@ bash-4.4$ curl http://localhost:8081
   "total_reqs": 3,
   "total_ok": 2,
   "total_limit_hits": 1
+}
+```
+
+You can send any args for tracking i.e:
+```
+bash-4.4$ curl http://localhost:8081?callerid=99191
+{
+  "path": "/",
+  "status_code": 200,
+  "msg": "OK",
+  "total_reqs": 5,
+  "total_ok": 4,
+  "total_limit_hits": 1,
+  "args": [
+    {
+      "callerid": "99191"
+    }
+  ]
+}
+```
+
+...Or override the the rate limit hit status code and response header:
+```
+bash-4.4$ curl -v http://localhost:8081?limit_hit_response_code=999\&retry_after_header_name=X-Custom-Retry
+...
+>
+< HTTP/1.1 999 Unknown Status
+< Server: TwistedWeb/18.9.0
+< Date: Thu, 06 Dec 2018 19:50:01 GMT
+< X-Custom-Retry: 10
+< Content-Length: 366
+< Content-Type: text/html
+<
+{
+  "path": "/",
+  "status_code": 999,
+  "msg": "999: rate limit hit max_calls:1 period_seconds:10",
+  "retry_in_seconds": 10,
+  "retry_after_header_name": "X-Custom-Retry",
+  "total_reqs": 5,
+  "total_ok": 2,
+  "total_limit_hits": 3,
+  "args": [
+    {
+      "limit_hit_response_code": "999"
+    },
+    {
+      "retry_after_header_name": "X-Custom-Retry"
+    }
+  ]
 }
 ```
