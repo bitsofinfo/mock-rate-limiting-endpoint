@@ -38,7 +38,7 @@ Start in a shell, logs to stdout
 ```
 ./python3 endpoint.py
 
-2018-12-06 19:09:16,171 - root - DEBUG - Starting with config: {"listen_port": 8081, "max_calls": 1, "period_seconds": 10, "retry_seconds": 10, "limit_hit_response_code": 429, "retry_after_header_name": "Retry-After"}
+2018-12-06 19:11:47,423 - root - DEBUG - Starting with config: {"listen_port": 8081, "max_calls": 1, "period_seconds": 10, "retry_in_seconds": 10, "limit_hit_response_code": 429, "retry_after_header_name": "Retry-After"}
 ```
 
 In another shell:
